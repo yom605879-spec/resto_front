@@ -111,7 +111,7 @@ export default function RegisterPage() {
         // Mavjud foydalanuvchi — to'g'ridan-to'g'ri kirish
         saveToken(data.token);
         saveUser(data.user);
-        router.push('/dashboard');
+        router.push(getDefaultRoute(data.user.role));
         return;
       }
 
