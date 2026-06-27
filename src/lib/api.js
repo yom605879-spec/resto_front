@@ -133,4 +133,8 @@ export const api = {
   updateTaskStatus: (id, status) => request(`/api/tasks/${id}/status`, { method: 'PUT', body: JSON.stringify({ status }) }),
   getSchedule: () => request('/api/schedule'),
   createSchedule: (data) => request('/api/schedule', { method: 'POST', body: JSON.stringify(data) }),
+  
+  // Payroll
+  getPayroll: (month) => request(`/api/payroll?month=${month}`),
+  paySalary: (data) => request('/api/payroll/pay', { method: 'POST', body: JSON.stringify(data) }),
 };
