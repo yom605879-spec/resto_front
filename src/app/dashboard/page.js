@@ -17,12 +17,15 @@ export default function DashboardOverview() {
 
   useEffect(() => {
     const user = getUser();
-    if (user && user.role !== 'boss' && user.role !== 'admin') {
-      router.push(getDefaultRoute(user.role));
+    // Redirect if user is not loaded or not authorized
+    if (!user || (user.role !== 'boss' && user.role !== 'admin')) {
+      if (user && user.role) {
+        router.push(getDefaultRoute(user.role));
+      }
       return;
     }
     loadData();
-  }, []);
+  }, [router]);
   const revenueData = [
     { name: 'Mon', revenue: 400000, orders: 24 },
     { name: 'Tue', revenue: 300000, orders: 18 },
@@ -39,19 +42,12 @@ export default function DashboardOverview() {
       setStats(data.stats || data);
       setRecentOrders(data.recent_orders || data.recentOrders || []);
     } catch (err) {
-      setError(err.message);
-      setStats({
-        total_orders: 145,
-        total_income: 4500000,
-        total_expenses: 1200000,
-        active_menu_items: 42,
-      });
-      // Fallback recent orders for demo
-      setRecentOrders([
-        { id: 1, table_number: 5, total_amount: 150000, status: 'completed', created_at: new Date().toISOString() },
-        { id: 2, table_number: 12, total_amount: 320000, status: 'served', created_at: new Date().toISOString() },
-        { id: 3, order_type: 'delivery', total_amount: 85000, status: 'ready', created_at: new Date().toISOString() }
-      ]);
+      if (err.message && err.message.includes('Access denied')) {
+        // Ruxsat yo'q bo'lsa, xatoni ko'rsatib feyk data qo'ymaymiz.
+        // Redirect layout.js yoki useEffect da ishlaydi
+      } else {
+        setError(err.message);
+      }
     } finally {
       setLoading(false);
     }

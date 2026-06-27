@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
-import { getToken, saveUser, removeToken, getUser } from '@/lib/auth';
+import { getToken, saveUser, removeToken, getUser, getDefaultRoute } from '@/lib/auth';
 
 const ROLE_LABELS_UZ = {
   boss: 'Boss',
@@ -81,6 +81,11 @@ export default function DashboardLayout({ children }) {
         setUser(userData);
         saveUser(userData);
         setLoading(false);
+        
+        // Agar foydalanuvchi to'g'ridan-to'g'ri /dashboard ga kirsayu, ruxsati bo'lmasa:
+        if (pathname === '/dashboard' && userData.role !== 'boss' && userData.role !== 'admin') {
+          router.push(getDefaultRoute(userData.role));
+        }
       })
       .catch((err) => {
         const msg = err.message || '';
