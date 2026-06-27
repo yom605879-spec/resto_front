@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Legend } from 'recharts';
+import { getUser, getDefaultRoute } from '@/lib/auth';
+import { useRouter } from 'next/navigation';
 
 export default function DashboardOverview() {
   const [stats, setStats] = useState(null);
@@ -11,8 +13,16 @@ export default function DashboardOverview() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const { t } = useLanguage();
+  const router = useRouter();
 
-  // Mock data for charts (in a real app, this comes from API)
+  useEffect(() => {
+    const user = getUser();
+    if (user && user.role !== 'boss' && user.role !== 'admin') {
+      router.push(getDefaultRoute(user.role));
+      return;
+    }
+    loadData();
+  }, []);
   const revenueData = [
     { name: 'Mon', revenue: 400000, orders: 24 },
     { name: 'Tue', revenue: 300000, orders: 18 },
@@ -23,18 +33,9 @@ export default function DashboardOverview() {
     { name: 'Sun', revenue: 950000, orders: 60 },
   ];
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
   const loadData = async () => {
     try {
       const data = await api.getOverview();
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
-      if (user.role === 'mijoz') {
-        window.location.href = '/dashboard/menu-view';
-        return;
-      }
       setStats(data.stats || data);
       setRecentOrders(data.recent_orders || data.recentOrders || []);
     } catch (err) {

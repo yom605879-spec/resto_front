@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
-import { saveToken, saveUser } from '@/lib/auth';
+import { saveToken, saveUser, getDefaultRoute } from '@/lib/auth';
 
 const ROLES = [
   { value: 'boss', label: 'Boss', subtitle: 'Restoran egasi', icon: '👑', color: '#f59e0b' },
@@ -199,7 +199,7 @@ export default function RegisterPage() {
       } else {
         saveToken(data.token);
         saveUser(data.user);
-        router.push('/dashboard');
+        router.push(getDefaultRoute(data.user.role));
       }
     } catch (err) {
       setError(err.message);

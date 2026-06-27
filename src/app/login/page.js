@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/api';
-import { saveToken, saveUser } from '@/lib/auth';
+import { saveToken, saveUser, getDefaultRoute } from '@/lib/auth';
 
 async function signInWithGoogle() {
   const { getFirebaseAuth, getGoogleProvider, signInWithPopup } = await import('@/lib/firebase');
@@ -38,7 +38,7 @@ export default function LoginPage() {
       const data = await api.login(form);
       saveToken(data.token);
       saveUser(data.user);
-      router.push('/dashboard');
+      router.push(getDefaultRoute(data.user.role));
     } catch (err) {
       const msg = err.message || '';
       if (msg.includes('tasdiqlanmagan') || msg.includes('Boss tomonidan')) {
@@ -75,7 +75,7 @@ export default function LoginPage() {
 
       saveToken(data.token);
       saveUser(data.user);
-      router.push('/dashboard');
+      router.push(getDefaultRoute(data.user.role));
     } catch (err) {
       if (err.code === 'auth/popup-closed-by-user' || err.code === 'auth/cancelled-popup-request') {
         return;

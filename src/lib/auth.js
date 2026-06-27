@@ -40,3 +40,21 @@ export function logout() {
   removeToken();
   window.location.href = '/login';
 }
+
+export function getDefaultRoute(role) {
+  switch (role) {
+    case 'boss':
+    case 'admin':
+      return '/dashboard';
+    case 'kassir':
+      return '/dashboard/payments';
+    case 'oshpaz':
+      return '/dashboard/kitchen';
+    case 'ofitsiant':
+      return '/dashboard/tables-view';
+    case 'mijoz':
+      return '/dashboard/menu-view';
+    default:
+      return '/dashboard/menu-view';
+  }
+}
