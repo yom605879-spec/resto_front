@@ -59,6 +59,7 @@ const NAV_ITEMS = {
 };
 
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export default function DashboardLayout({ children }) {
   const router = useRouter();
@@ -67,6 +68,7 @@ export default function DashboardLayout({ children }) {
   const [loading, setLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { t, locale, changeLanguage } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const token = getToken();
@@ -157,10 +159,19 @@ export default function DashboardLayout({ children }) {
           <div className="sidebar-role">{t('common.role')}: {roleLabel}</div>
         </div>
 
-        <div style={{ padding: '0 20px', marginBottom: '10px', display: 'flex', gap: '5px' }}>
-          <button className={`btn btn-sm ${locale === 'uz' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => changeLanguage('uz')}>UZ</button>
-          <button className={`btn btn-sm ${locale === 'ru' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => changeLanguage('ru')}>RU</button>
-          <button className={`btn btn-sm ${locale === 'en' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => changeLanguage('en')}>EN</button>
+        <div style={{ padding: '0 20px', marginBottom: '12px', display: 'flex', gap: '5px', alignItems: 'center' }}>
+          <button className={`btn btn-sm ${locale === 'uz' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => changeLanguage('uz')}>UZ</button>
+          <button className={`btn btn-sm ${locale === 'ru' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => changeLanguage('ru')}>RU</button>
+          <button className={`btn btn-sm ${locale === 'en' ? 'btn-primary' : 'btn-ghost'}`} onClick={() => changeLanguage('en')}>EN</button>
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            title={theme === 'dark' ? "Light modega o'tish" : "Dark modega o'tish"}
+            style={{ marginLeft: 'auto' }}
+          >
+            <span className="theme-toggle-icon theme-toggle-icon-moon">🌙</span>
+            <span className="theme-toggle-icon theme-toggle-icon-sun">☀️</span>
+          </button>
         </div>
 
         <nav className="sidebar-nav">
@@ -198,8 +209,8 @@ export default function DashboardLayout({ children }) {
       <main className="dashboard-main">
         <header className="dashboard-header">
           <div>
-            <h1 className="dashboard-page-title">{getPageTitle()}</h1>
-            <p className="dashboard-page-subtitle">
+            <h1 className="dashboard-page-title animate-fade-in-down">{getPageTitle()}</h1>
+            <p className="dashboard-page-subtitle animate-fade-in" style={{ animationDelay: '0.1s' }}>
               {new Date().toLocaleDateString(locale === 'uz' ? 'uz-UZ' : locale === 'ru' ? 'ru-RU' : 'en-US', {
                 weekday: 'long',
                 year: 'numeric',
@@ -208,6 +219,14 @@ export default function DashboardLayout({ children }) {
               })}
             </p>
           </div>
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            title={theme === 'dark' ? "Light modega o'tish" : "Dark modega o'tish"}
+          >
+            <span className="theme-toggle-icon theme-toggle-icon-moon">🌙</span>
+            <span className="theme-toggle-icon theme-toggle-icon-sun">☀️</span>
+          </button>
         </header>
         <div className="dashboard-content">{children}</div>
       </main>
