@@ -61,92 +61,7 @@ const NAV_ITEMS = {
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 
-const LANG_OPTIONS = [
-  { code: 'uz', flag: '🇺🇿', label: "O'zbek" },
-  { code: 'ru', flag: '🇷🇺', label: 'Русский' },
-  { code: 'en', flag: '🇬🇧', label: 'English' },
-];
 
-function LangSwitcher({ locale, changeLanguage }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
-  const current = LANG_OPTIONS.find(l => l.code === locale) || LANG_OPTIONS[0];
-
-  useEffect(() => {
-    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
-
-  return (
-    <div ref={ref} style={{ position: 'relative' }}>
-      <button
-        onClick={() => setOpen(o => !o)}
-        style={{
-          display: 'flex', alignItems: 'center', gap: '7px',
-          padding: '8px 14px', borderRadius: '12px',
-          border: '1px solid var(--border-color-light)',
-          background: open ? 'rgba(var(--primary-rgb),0.12)' : 'var(--bg-input)',
-          color: 'var(--text-primary)', cursor: 'pointer',
-          fontSize: '14px', fontWeight: 600,
-          transition: 'all 0.2s', fontFamily: 'inherit',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
-        }}
-        onMouseEnter={e => { if (!open) e.currentTarget.style.background = 'rgba(var(--primary-rgb),0.08)'; }}
-        onMouseLeave={e => { if (!open) e.currentTarget.style.background = open ? 'rgba(var(--primary-rgb),0.12)' : 'var(--bg-input)'; }}
-      >
-        <span style={{ fontSize: '18px', lineHeight: 1 }}>{current.flag}</span>
-        <span className="lang-code-text">{current.code.toUpperCase()}</span>
-        <span style={{
-          fontSize: '10px', opacity: 0.5,
-          transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
-          transition: 'transform 0.2s',
-          display: 'inline-block',
-        }}>▼</span>
-      </button>
-
-      {open && (
-        <div style={{
-          position: 'absolute', top: 'calc(100% + 8px)', right: 0,
-          background: 'var(--bg-secondary)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          borderRadius: '14px', padding: '6px',
-          minWidth: '160px', zIndex: 200,
-          boxShadow: '0 16px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(124,107,239,0.15)',
-          backdropFilter: 'blur(20px)',
-          animation: 'dropIn 0.18s cubic-bezier(0.16,1,0.3,1) forwards',
-        }}>
-          {LANG_OPTIONS.map(lang => (
-            <button
-              key={lang.code}
-              onClick={() => { changeLanguage(lang.code); setOpen(false); }}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '10px',
-                width: '100%', padding: '9px 12px', borderRadius: '10px',
-                border: 'none',
-                background: locale === lang.code ? 'rgba(124,107,239,0.18)' : 'transparent',
-                color: locale === lang.code ? 'var(--primary-light)' : 'var(--text-secondary)',
-                cursor: 'pointer', fontSize: '14px', fontWeight: locale === lang.code ? 700 : 500,
-                transition: 'all 0.15s', fontFamily: 'inherit',
-                textAlign: 'left',
-              }}
-              onMouseEnter={e => { if (locale !== lang.code) e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}
-              onMouseLeave={e => { if (locale !== lang.code) e.currentTarget.style.background = 'transparent'; }}
-            >
-              <span style={{ fontSize: '20px' }}>{lang.flag}</span>
-              <div>
-                <div style={{ fontSize: '13px' }}>{lang.label}</div>
-                <div style={{ fontSize: '11px', opacity: 0.5 }}>{lang.code.toUpperCase()}</div>
-              </div>
-              {locale === lang.code && <span style={{ marginLeft: 'auto', color: 'var(--primary-light)', fontSize: '12px' }}>✓</span>}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
 
 export default function DashboardLayout({ children }) {
   const router = useRouter();
@@ -262,15 +177,16 @@ export default function DashboardLayout({ children }) {
         </nav>
 
         <div className="sidebar-footer">
-          <div className="sidebar-user">
+          <Link href="/dashboard/profile" className="sidebar-user" style={{ textDecoration: 'none', cursor: 'pointer' }}>
             <div className="sidebar-user-avatar">{initials}</div>
-            <div className="sidebar-user-info">
-              <div className="sidebar-user-name">
+            <div className="sidebar-user-info" style={{ flex: 1 }}>
+              <div className="sidebar-user-name" style={{ color: 'var(--text-primary)' }}>
                 {user?.first_name} {user?.last_name}
               </div>
-              <div className="sidebar-user-role">{roleLabel}</div>
+              <div className="sidebar-user-role" style={{ color: 'var(--text-secondary)' }}>{roleLabel}</div>
             </div>
-          </div>
+            <div className="sidebar-user-settings-icon" style={{ opacity: 0.6, fontSize: '18px' }}>⚙️</div>
+          </Link>
           <button className="sidebar-logout" onClick={handleLogout}>
             {t('common.logout')}
           </button>
@@ -292,15 +208,7 @@ export default function DashboardLayout({ children }) {
             </p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <LangSwitcher locale={locale} changeLanguage={changeLanguage} />
-            <button
-              className="theme-toggle"
-              onClick={toggleTheme}
-              title={theme === 'dark' ? "Light modega o'tish" : "Dark modega o'tish"}
-            >
-              <span className="theme-toggle-icon theme-toggle-icon-moon">🌙</span>
-              <span className="theme-toggle-icon theme-toggle-icon-sun">☀️</span>
-            </button>
+            {/* The language and theme switchers have been moved to /dashboard/profile */}
           </div>
         </header>
         <div className="dashboard-content">{children}</div>
