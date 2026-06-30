@@ -139,7 +139,27 @@ export default function DashboardLayout({ children }) {
   };
 
   return (
-    <div className="dashboard-layout">
+    <div className="dashboard-layout" style={{ position: 'relative', overflow: 'hidden' }}>
+      {/* Background Slider */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', background: '#000' }}>
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80')" }} />
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1920&q=80')", animationDelay: '6s' }} />
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1537047902294-62a40c20a6ae?auto=format&fit=crop&w=1920&q=80')", animationDelay: '12s' }} />
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1920&q=80')", animationDelay: '18s' }} />
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=1920&q=80')", animationDelay: '24s' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(10, 10, 15, 0.82)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}/>
+      </div>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        .bg-slide {
+          position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; animation: crossfade 30s infinite;
+        }
+        @keyframes crossfade { 0% { opacity: 0; transform: scale(1.05); } 10%, 25% { opacity: 1; transform: scale(1); } 35%, 100% { opacity: 0; transform: scale(1.05); } }
+        
+        /* Ensure sidebar and main content are above background */
+        .sidebar { z-index: 50 !important; background: var(--bg-sidebar); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .dashboard-main { position: relative; z-index: 10; flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; }
+      `}} />
       {/* Mobile sidebar toggle */}
       <button
         className="sidebar-toggle"
