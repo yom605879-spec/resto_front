@@ -29,9 +29,8 @@ export default function RegisterPage() {
   const [step, setStep] = useState(1);
   const [authMode, setAuthMode] = useState(null); // 'telegram' | 'google'
 
-  // Telegram flow state
-  const [code, setCode] = useState('');
-  const [telegramUser, setTelegramUser] = useState(null);
+  // Google flow state
+  const [googleUser, setGoogleUser] = useState(null);
 
   // Google flow state
   const [googleUser, setGoogleUser] = useState(null);
@@ -70,27 +69,7 @@ export default function RegisterPage() {
     }
   }, []);
 
-  // ─── Telegram flow ───────────────────────────────────────────
-  const handleVerifyCode = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-    try {
-      const data = await api.verifyCode(code);
-      setTelegramUser(data);
-      setAuthMode('telegram');
-      setForm(prev => ({
-        ...prev,
-        first_name: data.first_name || '',
-        last_name: data.last_name || '',
-      }));
-      setStep(2);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+
 
   // ─── Google flow ─────────────────────────────────────────────
   const handleGoogleSignIn = async () => {
@@ -155,23 +134,11 @@ export default function RegisterPage() {
     e.preventDefault();
     setError('');
 
-    if (authMode === 'telegram') {
-      if (form.password !== form.confirmPassword) {
-        setError('Parollar mos kelmadi');
-        return;
-      }
-      if (form.password.length < 4) {
-        setError("Parol kamida 4 belgidan iborat bo'lishi kerak");
-        return;
-      }
-    }
-
     setLoading(true);
     try {
       let data;
 
       if (authMode === 'google') {
-        // Parol ixtiyoriy — Google foydalanuvchilarda
         data = await api.googleRegister({
           google_uid: googleUser.uid,
           email: googleUser.email,
@@ -180,16 +147,6 @@ export default function RegisterPage() {
           last_name: form.last_name,
           role: selectedRole,
           password: form.password || undefined,
-        });
-      } else {
-        // Telegram orqali
-        data = await api.register({
-          telegram_id: telegramUser.telegram_id,
-          username: form.username,
-          first_name: form.first_name,
-          last_name: form.last_name,
-          password: form.password,
-          role: selectedRole,
         });
       }
 
@@ -215,13 +172,25 @@ export default function RegisterPage() {
   ];
 
   return (
-    <div className="auth-page">
-      <div className="auth-bg">
-        <div className="auth-bg-orb auth-bg-orb-1"></div>
-        <div className="auth-bg-orb auth-bg-orb-2"></div>
+    <div className="auth-page" style={{ position: 'relative', overflow: 'hidden' }}>
+      {/* Background Slider */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', background: '#000' }}>
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80')" }} />
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1920&q=80')", animationDelay: '6s' }} />
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1537047902294-62a40c20a6ae?auto=format&fit=crop&w=1920&q=80')", animationDelay: '12s' }} />
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1920&q=80')", animationDelay: '18s' }} />
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=1920&q=80')", animationDelay: '24s' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(10, 10, 15, 0.8)', backdropFilter: 'blur(3px)', WebkitBackdropFilter: 'blur(3px)' }}/>
       </div>
 
-      <div className="auth-card" style={{ maxWidth: step === 2 ? '560px' : '440px', transition: 'max-width 0.3s ease' }}>
+      <style dangerouslySetInnerHTML={{ __html: `
+        .bg-slide {
+          position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; animation: crossfade 30s infinite;
+        }
+        @keyframes crossfade { 0% { opacity: 0; transform: scale(1.05); } 10%, 25% { opacity: 1; transform: scale(1); } 35%, 100% { opacity: 0; transform: scale(1.05); } }
+      `}} />
+
+      <div className="auth-card" style={{ maxWidth: step === 2 ? '560px' : '440px', transition: 'max-width 0.3s ease', position: 'relative', zIndex: 10 }}>
         <div className="auth-header">
           <div className="auth-logo">✦ Restaran</div>
           {step < 4 && (
@@ -315,53 +284,6 @@ export default function RegisterPage() {
               )}
               {loading ? 'Yuklanmoqda...' : 'Google bilan ro\'yxatdan o\'tish'}
             </button>
-
-            {/* Divider */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
-              <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
-              <span style={{ fontSize: '12px', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>
-                yoki Telegram kod bilan
-              </span>
-              <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.08)' }} />
-            </div>
-
-            {/* Telegram code form */}
-            <form onSubmit={handleVerifyCode}>
-              <div style={{
-                padding: '12px 14px', borderRadius: '10px', marginBottom: '14px',
-                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-                fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6,
-              }}>
-                📱 <a href="https://t.me/restaranuz_bot" target="_blank" rel="noopener noreferrer"
-                  style={{ color: 'rgba(165,180,252,0.9)', textDecoration: 'none' }}>
-                  @restaranuz_bot
-                </a> ga <strong style={{ color: 'var(--text)' }}>/start</strong> yuboring va kodni kiriting
-              </div>
-
-              <div className="form-group" style={{ marginBottom: '12px' }}>
-                <input
-                  type="text"
-                  className="form-input"
-                  placeholder="Telegram kodini kiriting"
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  required
-                  style={{ textAlign: 'center', letterSpacing: '0.2em', fontSize: '18px', fontWeight: '700' }}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="btn btn-primary btn-lg auth-submit"
-                disabled={loading}
-              >
-                {loading ? (
-                  <><span className="spinner spinner-small"></span> Tekshirilmoqda...</>
-                ) : (
-                  'Kodni Tasdiqlash →'
-                )}
-              </button>
-            </form>
           </div>
         )}
 
@@ -401,9 +323,7 @@ export default function RegisterPage() {
             )}
 
             <p style={{ color: 'var(--text-muted)', fontSize: '13px', marginBottom: '14px', textAlign: 'center' }}>
-              {authMode === 'google'
-                ? '🎉 Google akkaunt ulandi! Rolingizni tanlang:'
-                : `👋 Salom, ${telegramUser?.first_name || ''}! Rolingizni tanlang:`}
+              🎉 Google akkaunt ulandi! Rolingizni tanlang:
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
@@ -467,7 +387,7 @@ export default function RegisterPage() {
                   {ROLES.find(r => r.value === selectedRole)?.label}
                 </div>
                 <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-                  {authMode === 'google' ? '🔵 Google akkaunt orqali' : '📱 Telegram orqali'}
+                  🔵 Google akkaunt orqali
                 </div>
               </div>
             </div>
@@ -511,33 +431,19 @@ export default function RegisterPage() {
 
             <div className="form-group">
               <label className="form-label">
-                Parol {authMode === 'google' && <span style={{ color: 'var(--text-muted)', fontSize: '12px', fontWeight: '400' }}>(ixtiyoriy)</span>}
+                Parol <span style={{ color: 'var(--text-muted)', fontSize: '12px', fontWeight: '400' }}>(ixtiyoriy)</span>
               </label>
               <input
                 type="password"
                 className="form-input"
-                placeholder={authMode === 'google' ? 'Parol o\'rnatish (ixtiyoriy)' : 'Parol yarating'}
+                placeholder="Parol o'rnatish (ixtiyoriy)"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
-                required={authMode !== 'google'}
                 autoComplete="new-password"
               />
             </div>
 
-            {authMode !== 'google' && (
-              <div className="form-group">
-                <label className="form-label">Parolni Tasdiqlang</label>
-                <input
-                  type="password"
-                  className="form-input"
-                  placeholder="Parolni qayta kiriting"
-                  value={form.confirmPassword}
-                  onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-                  required
-                  autoComplete="new-password"
-                />
-              </div>
-            )}
+
 
             <div style={{ display: 'flex', gap: '12px' }}>
               <button

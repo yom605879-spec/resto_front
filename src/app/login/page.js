@@ -62,47 +62,17 @@ export default function LoginPage() {
   return (
     <>
       <style>{`
-        html, body { margin: 0; padding: 0; background: #06040f !important; }
+        html, body { margin: 0; padding: 0; background: #050505 !important; }
         .login-bg {
           min-height: 100vh;
-          background: #06040f;
           display: flex; align-items: center; justify-content: center;
           padding: 20px; position: relative; overflow: hidden;
           font-family: 'Inter', -apple-system, sans-serif;
         }
-        /* Nebula blobs */
-        .nb1 {
-          position: fixed; top: -20%; left: -15%;
-          width: 700px; height: 700px; border-radius: 50%;
-          background: radial-gradient(circle at center, rgba(130,60,255,0.55) 0%, rgba(100,30,220,0.25) 35%, transparent 70%);
-          filter: blur(60px); pointer-events: none; z-index: 1;
-          animation: nb1move 14s ease-in-out infinite;
+        .bg-slide {
+          position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; animation: crossfade 30s infinite;
         }
-        .nb2 {
-          position: fixed; bottom: -15%; right: -10%;
-          width: 600px; height: 600px; border-radius: 50%;
-          background: radial-gradient(circle at center, rgba(0,200,180,0.4) 0%, rgba(0,150,200,0.15) 40%, transparent 70%);
-          filter: blur(60px); pointer-events: none; z-index: 1;
-          animation: nb2move 18s ease-in-out infinite;
-        }
-        .nb3 {
-          position: fixed; top: 30%; right: 10%;
-          width: 400px; height: 400px; border-radius: 50%;
-          background: radial-gradient(circle at center, rgba(200,60,255,0.3) 0%, transparent 65%);
-          filter: blur(50px); pointer-events: none; z-index: 1;
-          animation: nb3move 22s ease-in-out infinite;
-        }
-        /* Stars */
-        .stars {
-          position: fixed; inset: 0; pointer-events: none; z-index: 1;
-          background-image:
-            radial-gradient(circle, rgba(255,255,255,0.95) 1px, transparent 1px),
-            radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px),
-            radial-gradient(circle, rgba(200,180,255,0.7) 1px, transparent 1px),
-            radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px);
-          background-size: 320px 320px, 210px 210px, 160px 160px, 120px 120px;
-          background-position: 0 0, 80px 110px, 40px 170px, 160px 60px;
-        }
+        @keyframes crossfade { 0% { opacity: 0; transform: scale(1.05); } 10%, 25% { opacity: 1; transform: scale(1); } 35%, 100% { opacity: 0; transform: scale(1.05); } }
         /* Card */
         .login-card {
           position: relative; z-index: 10;
@@ -194,20 +164,20 @@ export default function LoginPage() {
           flex-shrink: 0;
         }
         @keyframes cardIn { from { opacity:0; transform:translateY(28px) scale(0.96); } to { opacity:1; transform:translateY(0) scale(1); } }
-        @keyframes nb1move { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(40px,-30px) scale(1.1);} }
-        @keyframes nb2move { 0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-30px,25px) scale(1.07);} }
-        @keyframes nb3move { 0%,100%{transform:translate(0,0);} 50%{transform:translate(20px,-25px);} }
         @keyframes starPulse { 0%,100%{opacity:0.2;transform:scale(1) rotate(0deg);} 50%{opacity:0.5;transform:scale(1.3) rotate(20deg);} }
         @keyframes spin { to { transform:rotate(360deg); } }
         @media (max-width:480px) { .login-card { padding: 32px 24px; } }
       `}</style>
 
       <div className="login-bg">
-        {/* Nebulas */}
-        <div className="nb1"/>
-        <div className="nb2"/>
-        <div className="nb3"/>
-        <div className="stars"/>
+        <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', background: '#000' }}>
+          <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80')" }} />
+          <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1920&q=80')", animationDelay: '6s' }} />
+          <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1537047902294-62a40c20a6ae?auto=format&fit=crop&w=1920&q=80')", animationDelay: '12s' }} />
+          <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1920&q=80')", animationDelay: '18s' }} />
+          <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=1920&q=80')", animationDelay: '24s' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'rgba(10, 10, 15, 0.8)', backdropFilter: 'blur(3px)', WebkitBackdropFilter: 'blur(3px)' }}/>
+        </div>
 
         {/* Card */}
         <div className="login-card">
