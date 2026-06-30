@@ -104,49 +104,28 @@ export default function Home() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'radial-gradient(ellipse at 40% 30%, #0a0818 0%, #050510 60%, #060410 100%)',
+      background: '#050505',
       color: '#fff',
       fontFamily: "'Inter', sans-serif",
       overflowX: 'hidden',
     }}>
-      {/* Stars */}
+      {/* Background Slider */}
       <div style={{
-        position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden',
+        position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', background: '#000'
       }}>
-        {/* Nebula 1 */}
-        <div style={{
-          position: 'absolute', top: '-15%', left: '-10%',
-          width: '80vw', height: '80vw',
-          background: 'radial-gradient(ellipse, rgba(100,50,255,0.2) 0%, rgba(100,50,255,0.05) 40%, transparent 70%)',
-          borderRadius: '50%', filter: 'blur(40px)',
-          animation: 'nebula1 16s ease-in-out infinite',
-        }}/>
-        <div style={{
-          position: 'absolute', bottom: '10%', right: '-15%',
-          width: '70vw', height: '70vw',
-          background: 'radial-gradient(ellipse, rgba(0,180,200,0.15) 0%, rgba(0,150,200,0.04) 40%, transparent 70%)',
-          borderRadius: '50%', filter: 'blur(40px)',
-          animation: 'nebula2 20s ease-in-out infinite',
-        }}/>
-        <div style={{
-          position: 'absolute', top: '50%', left: '40%',
-          width: '40vw', height: '40vw',
-          background: 'radial-gradient(ellipse, rgba(200,80,200,0.1) 0%, transparent 70%)',
-          borderRadius: '50%', filter: 'blur(30px)',
-          animation: 'nebula3 24s ease-in-out infinite',
-        }}/>
-        {/* Star dots */}
+        {/* Images */}
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80')" }} />
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=1920&q=80')", animationDelay: '6s' }} />
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1537047902294-62a40c20a6ae?auto=format&fit=crop&w=1920&q=80')", animationDelay: '12s' }} />
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1920&q=80')", animationDelay: '18s' }} />
+        <div className="bg-slide" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=1920&q=80')", animationDelay: '24s' }} />
+        
+        {/* Dark Overlay for minimal/clean look and readability */}
         <div style={{
           position: 'absolute', inset: 0,
-          backgroundImage: `
-            radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1px),
-            radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px),
-            radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px),
-            radial-gradient(circle, rgba(200,180,255,0.6) 1px, transparent 1px)
-          `,
-          backgroundSize: '300px 300px, 200px 200px, 150px 150px, 400px 400px',
-          backgroundPosition: '0 0, 70px 100px, 35px 160px, 150px 50px',
-          opacity: 0.5,
+          background: 'rgba(10, 10, 15, 0.8)',
+          backdropFilter: 'blur(3px)',
+          WebkitBackdropFilter: 'blur(3px)',
         }}/>
       </div>
 
@@ -547,18 +526,20 @@ export default function Home() {
       </footer>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes nebula1 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(40px, -30px) scale(1.08); }
+        .bg-slide {
+          position: absolute;
+          inset: 0;
+          background-size: cover;
+          background-position: center;
+          opacity: 0;
+          animation: crossfade 30s infinite;
         }
-        @keyframes nebula2 {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          50% { transform: translate(-30px, 20px) scale(1.05); }
-        }
-        @keyframes nebula3 {
-          0%, 100% { transform: translate(0, 0); }
-          33% { transform: translate(20px, 30px); }
-          66% { transform: translate(-15px, -20px); }
+        @keyframes crossfade {
+          0% { opacity: 0; transform: scale(1.05); }
+          10% { opacity: 1; transform: scale(1); }
+          25% { opacity: 1; transform: scale(1); }
+          35% { opacity: 0; transform: scale(1.05); }
+          100% { opacity: 0; transform: scale(1.05); }
         }
         @media (max-width: 768px) {
           #features > div:nth-child(2),
