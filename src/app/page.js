@@ -61,6 +61,45 @@ const FEATURES = [
   },
 ];
 
+const DEMO_PRODUCTS = [
+  {
+    name: "Truffle Ribeye Steak",
+    desc: "Olovda pishirilgan premium mol go'shti, trufel sousi bilan.",
+    price: "245 000 UZS",
+    image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    name: "Sushi Set 'Tokyo'",
+    desc: "Yangi losos, orkinos va qisqichbaqa go'shtidan iborat 24 talik set.",
+    price: "180 000 UZS",
+    image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    name: "Margarita Pitsasi",
+    desc: "Haqiqiy italyancha resept. Motsarella pishlog'i va pomidor sousi.",
+    price: "95 000 UZS",
+    image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    name: "Qirollik Qisqichbaqasi",
+    desc: "Sarimsoq va limon sousida qovurilgan ulkan qisqichbaqa oyoqlari.",
+    price: "320 000 UZS",
+    image: "https://images.unsplash.com/photo-1559742811-822873691df8?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    name: "Pista va Malina Dezerti",
+    desc: "Fransuzcha makaron, yangi malina va maxsus pista kremi.",
+    price: "65 000 UZS",
+    image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    name: "Tiramisu Klasik",
+    desc: "Mascarpone pishlog'i va kofe ekstrakti bilan tayyorlangan shirinlik.",
+    price: "55 000 UZS",
+    image: "https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=400&q=80"
+  }
+];
+
 export default function Home() {
   return (
     <div style={{
@@ -288,6 +327,90 @@ export default function Home() {
           </div>
         </motion.div>
 
+        {/* Demo Products Section */}
+        <div style={{ marginBottom: '80px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <h2 style={{
+              fontSize: 'clamp(24px, 3vw, 36px)', fontWeight: 800,
+              background: 'linear-gradient(135deg, #fff, #a78bfa)',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+              marginBottom: '12px'
+            }}>
+              Eng xaridorgir taomlar (Demo)
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '15px' }}>
+              Mijozlaringiz xuddi shunday chiroyli menyuni ko'rib buyurtma berishadi
+            </p>
+          </div>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gap: '24px'
+          }}>
+            {DEMO_PRODUCTS.map((product, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  display: 'flex', flexDirection: 'column',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+                }}
+                whileHover={{
+                  y: -6,
+                  boxShadow: '0 20px 40px rgba(108,60,255,0.15)',
+                  borderColor: 'rgba(108,60,255,0.4)',
+                }}
+              >
+                <div style={{
+                  height: '220px', width: '100%',
+                  backgroundImage: `url(${product.image})`,
+                  backgroundSize: 'cover', backgroundPosition: 'center',
+                  borderBottom: '1px solid rgba(255,255,255,0.05)'
+                }} />
+                <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px', gap: '10px' }}>
+                    <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#fff', margin: 0, lineHeight: 1.3 }}>{product.name}</h3>
+                    <span style={{ color: '#60d0dc', fontWeight: 700, fontSize: '15px', whiteSpace: 'nowrap' }}>{product.price}</span>
+                  </div>
+                  <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px', lineHeight: 1.6, marginBottom: '24px', flex: 1 }}>
+                    {product.desc}
+                  </p>
+                  <Link href="/register" style={{
+                    display: 'block', textAlign: 'center',
+                    padding: '12px', borderRadius: '12px',
+                    background: 'rgba(108,60,255,0.1)',
+                    border: '1px solid rgba(108,60,255,0.3)',
+                    color: '#c4b5fd', fontWeight: 600, fontSize: '14px',
+                    textDecoration: 'none', transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = 'rgba(108,60,255,0.25)';
+                    e.currentTarget.style.borderColor = 'rgba(108,60,255,0.6)';
+                    e.currentTarget.style.color = '#fff';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = 'rgba(108,60,255,0.1)';
+                    e.currentTarget.style.borderColor = 'rgba(108,60,255,0.3)';
+                    e.currentTarget.style.color = '#c4b5fd';
+                  }}>
+                    🛒 Buyurtma qilish
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
         {/* Feature Cards Grid */}
         <div id="features" style={{
           display: 'grid',
@@ -423,7 +546,7 @@ export default function Home() {
         }}>✦</div>
       </footer>
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @keyframes nebula1 {
           0%, 100% { transform: translate(0, 0) scale(1); }
           50% { transform: translate(40px, -30px) scale(1.08); }
@@ -445,7 +568,7 @@ export default function Home() {
             grid-column: span 12 !important;
           }
         }
-      `}</style>
+      ` }} />
     </div>
   );
 }
