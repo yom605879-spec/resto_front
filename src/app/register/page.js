@@ -32,9 +32,6 @@ export default function RegisterPage() {
   // Google flow state
   const [googleUser, setGoogleUser] = useState(null);
 
-  // Google flow state
-  const [googleUser, setGoogleUser] = useState(null);
-
   const [selectedRole, setSelectedRole] = useState('');
   const [form, setForm] = useState({
     username: '',
