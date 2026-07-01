@@ -25,9 +25,10 @@ export const api = {
     request('/api/auth/login', { method: 'POST', body: JSON.stringify(data) }),
   getMe: () => request('/api/auth/me'),
   getAllUsers: () => request('/api/auth/all-users'),
-  getStaff: () => request('/api/auth/all-users'),
-  createStaff: (data) => request('/api/auth/register', { method: 'POST', body: JSON.stringify(data) }),
-  deleteStaff: (id) => request(`/api/auth/reject/${id}`, { method: 'DELETE' }),
+  getStaff: () => request('/api/staff'),
+  createStaff: (data) => request('/api/staff', { method: 'POST', body: JSON.stringify(data) }),
+  deleteStaff: (id) => request(`/api/staff/${id}`, { method: 'DELETE' }),
+  updateStaff: (id, data) => request(`/api/staff/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   getPendingUsers: () => request('/api/auth/pending'),
   approveUser: (id) =>
     request(`/api/auth/approve/${id}`, { method: 'PUT', body: JSON.stringify({}) }),
