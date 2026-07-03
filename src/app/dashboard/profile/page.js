@@ -6,9 +6,9 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { getUser } from '@/lib/auth';
 
 const LANG_OPTIONS = [
-  { code: 'uz', flag: '🇺🇿', label: "O'zbek", desc: "O'zbek tilida ishlash" },
-  { code: 'ru', flag: '🇷🇺', label: 'Русский', desc: 'Работать на русском' },
-  { code: 'en', flag: '🇬🇧', label: 'English', desc: 'Work in English' },
+  { code: 'uz', flag: '🇺🇿', label: "O'zbek", descKey: "profile.workInUz" },
+  { code: 'ru', flag: '🇷🇺', label: 'Русский', descKey: "profile.workInRu" },
+  { code: 'en', flag: '🇬🇧', label: 'English', descKey: "profile.workInEn" },
 ];
 
 export default function ProfilePage() {
@@ -26,22 +26,14 @@ export default function ProfilePage() {
   const initials = `${(user?.first_name || '')[0] || ''}${(user?.last_name || '')[0] || ''}`.toUpperCase() || 'U';
 
   const formatRole = (role) => {
-    const roles = {
-      boss: 'Boss',
-      admin: 'Admin',
-      kassir: 'Kassir',
-      oshpaz: 'Oshpaz',
-      ofitsiant: 'Ofitsiant',
-      mijoz: 'Mijoz',
-    };
-    return roles[role] || role;
+    return t('common.roles.' + role) || role;
   };
 
   return (
     <div className="profile-container animate-fade-in">
       <div className="profile-header">
-        <h2 className="section-title">Profil va Sozlamalar</h2>
-        <p className="section-subtitle">Shaxsiy ma'lumotlar va platforma sozlamalarini boshqarish</p>
+        <h2 className="section-title">{t('profile.title') || 'Profil va Sozlamalar'}</h2>
+        <p className="section-subtitle">{t('profile.subtitle') || "Shaxsiy ma'lumotlar va platforma sozlamalarini boshqarish"}</p>
       </div>
 
       <div className="profile-grid">
@@ -57,7 +49,7 @@ export default function ProfilePage() {
               <div className="info-item">
                 <span className="info-icon">📞</span>
                 <div>
-                  <div className="info-label">Telefon / Username</div>
+                  <div className="info-label">{t('profile.phoneUsername') || 'Telefon / Username'}</div>
                   <div className="info-value">{user?.username || '+998 ** *** ** **'}</div>
                 </div>
               </div>
@@ -67,14 +59,14 @@ export default function ProfilePage() {
 
         {/* Settings Card */}
         <div className="profile-card settings-card">
-          <h3 className="card-title">Platforma Sozlamalari</h3>
+          <h3 className="card-title">{t('profile.platformSettings') || 'Platforma Sozlamalari'}</h3>
           
           <div className="settings-group">
             <div className="settings-header">
               <span className="settings-icon">🌓</span>
               <div>
-                <h4>Tizim Mavzusi</h4>
-                <p>Yorug' yoki qorong'u rejimni tanlang</p>
+                <h4>{t('profile.systemTheme') || 'Tizim Mavzusi'}</h4>
+                <p>{t('profile.themeDesc') || "Yorug' yoki qorong'u rejimni tanlang"}</p>
               </div>
             </div>
             <div className="theme-switcher">
@@ -83,14 +75,14 @@ export default function ProfilePage() {
                 onClick={() => theme !== 'light' && toggleTheme()}
               >
                 <span className="theme-btn-icon">☀️</span>
-                Yorug' (Light)
+                {t('profile.lightMode') || "Yorug' (Light)"}
               </button>
               <button 
                 className={`theme-btn ${theme === 'dark' ? 'active' : ''}`}
                 onClick={() => theme !== 'dark' && toggleTheme()}
               >
                 <span className="theme-btn-icon">🌙</span>
-                Qorong'u (Dark)
+                {t('profile.darkMode') || "Qorong'u (Dark)"}
               </button>
             </div>
           </div>
@@ -101,8 +93,8 @@ export default function ProfilePage() {
             <div className="settings-header">
               <span className="settings-icon">🌍</span>
               <div>
-                <h4>Tizim Tili</h4>
-                <p>O'zingizga qulay tilni tanlang</p>
+                <h4>{t('profile.systemLanguage') || 'Tizim Tili'}</h4>
+                <p>{t('profile.languageDesc') || "O'zingizga qulay tilni tanlang"}</p>
               </div>
             </div>
             <div className="lang-grid">
@@ -115,7 +107,7 @@ export default function ProfilePage() {
                   <div className="lang-option-flag">{lang.flag}</div>
                   <div className="lang-option-text">
                     <div className="lang-option-label">{lang.label}</div>
-                    <div className="lang-option-desc">{lang.desc}</div>
+                    <div className="lang-option-desc">{t(lang.descKey)}</div>
                   </div>
                   {locale === lang.code && (
                     <div className="lang-option-check">✓</div>

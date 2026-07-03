@@ -60,9 +60,9 @@ export default function SettingsPage() {
       localStorage.setItem('user', JSON.stringify(updatedUser));
       setUser(updatedUser);
       
-      alert('Sozlamalar muvaffaqiyatli saqlandi!');
+      alert(t('settingsPage.successMsg') || 'Sozlamalar muvaffaqiyatli saqlandi!');
     } catch (err) {
-      alert('Xatolik: ' + err.message);
+      alert((t('common.error') || 'Xatolik') + ': ' + err.message);
     } finally {
       setSaving(false);
     }
@@ -72,11 +72,11 @@ export default function SettingsPage() {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '30px' }}>Umumiy Sozlamalar</h2>
+      <h2 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '30px' }}>{t('settingsPage.title') || 'Umumiy Sozlamalar'}</h2>
 
       <div className="glass-card" style={{ marginBottom: '30px' }}>
         <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
-          Tizim Tili
+          {t('settingsPage.systemLanguage') || 'Tizim Tili'}
         </h3>
         <div style={{ display: 'flex', gap: '15px' }}>
           <button 
@@ -102,12 +102,12 @@ export default function SettingsPage() {
 
       <div className="glass-card">
         <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '20px', borderBottom: '1px solid var(--border-color)', paddingBottom: '10px' }}>
-          Profil Ma'lumotlari
+          {t('settingsPage.profileData') || "Profil Ma'lumotlari"}
         </h3>
         <form onSubmit={handleSave}>
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Username</label>
+              <label className="form-label">{t('settingsPage.username') || 'Username'}</label>
               <input 
                 type="text" 
                 name="username"
@@ -118,7 +118,7 @@ export default function SettingsPage() {
               />
             </div>
             <div className="form-group">
-              <label className="form-label">Email</label>
+              <label className="form-label">{t('settingsPage.email') || 'Email'}</label>
               <input 
                 type="email" 
                 name="email"
@@ -132,7 +132,7 @@ export default function SettingsPage() {
           
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Ism</label>
+              <label className="form-label">{t('settingsPage.firstName') || 'Ism'}</label>
               <input 
                 type="text" 
                 name="first_name"
@@ -142,7 +142,7 @@ export default function SettingsPage() {
               />
             </div>
             <div className="form-group">
-              <label className="form-label">Familiya</label>
+              <label className="form-label">{t('settingsPage.lastName') || 'Familiya'}</label>
               <input 
                 type="text" 
                 name="last_name"
@@ -155,7 +155,7 @@ export default function SettingsPage() {
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
             <button type="submit" className="btn btn-primary" disabled={saving}>
-              {saving ? 'Saqlanmoqda...' : 'O\'zgarishlarni Saqlash'}
+              {saving ? (t('settingsPage.saving') || 'Saqlanmoqda...') : (t('settingsPage.saveChanges') || "O'zgarishlarni Saqlash")}
             </button>
           </div>
         </form>

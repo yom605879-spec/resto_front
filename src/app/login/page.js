@@ -61,7 +61,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <style>{`
+      <style suppressHydrationWarning>{`
         html, body { margin: 0; padding: 0; background: #050505 !important; }
         .login-bg {
           min-height: 100vh;

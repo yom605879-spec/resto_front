@@ -3,8 +3,11 @@
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/api';
 import { getUser } from '@/lib/auth';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { translateValue, getOrderStatusLabels } from '@/lib/translateValue';
 
 export default function OrdersPage() {
+  const { t, locale } = useLanguage();
   const [orders, setOrders] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -156,18 +159,18 @@ export default function OrdersPage() {
       {/* Toolbar */}
       <div className="orders-toolbar">
         <div className="orders-filters">
-          {['all', 'new', 'cooking', 'ready', 'served', 'paid', 'cancelled'].map((s) => (
+          {getOrderStatusLabels(locale).map(({ key, label }) => (
             <button
-              key={s}
-              className={`filter-btn ${filter === s ? 'active' : ''}`}
-              onClick={() => setFilter(s)}
+              key={key}
+              className={`filter-btn ${filter === key ? 'active' : ''}`}
+              onClick={() => setFilter(key)}
             >
-              {s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}
+              {label}
             </button>
           ))}
         </div>
         <button className="btn btn-primary" onClick={() => setShowNewOrder(true)}>
-          + New Order
+          + {locale === 'ru' ? 'Новый заказ' : locale === 'en' ? 'New Order' : 'Yangi Buyurtma'}
         </button>
       </div>
 
@@ -175,9 +178,14 @@ export default function OrdersPage() {
       {filteredOrders.length === 0 ? (
         <div className="empty-state">
           <div className="empty-state-icon">📋</div>
-          <div className="empty-state-title">No orders found</div>
+          <div className="empty-state-title">
+            {locale === 'ru' ? 'Заказов нет' : locale === 'en' ? 'No orders found' : "Buyurtmalar yo'q"}
+          </div>
           <div className="empty-state-desc">
-            {filter === 'all' ? 'Create your first order!' : `No ${filter} orders right now`}
+            {filter === 'all'
+              ? (locale === 'ru' ? 'Создайте первый заказ!' : locale === 'en' ? 'Create your first order!' : 'Birinchi buyurtmangizni qo\'ling!')
+              : `${translateValue('status', filter, locale)} ${locale === 'ru' ? 'заказов нет' : locale === 'en' ? 'orders right now' : 'buyurtmalar yo\'q'}`
+            }
           </div>
         </div>
       ) : (
@@ -190,10 +198,12 @@ export default function OrdersPage() {
                     #{(order._id || order.id || '').slice(-6).toUpperCase()}
                   </span>
                   <span className="order-table-number" style={{ marginLeft: '12px' }}>
-                    Table {order.table_number || '-'}
+                    {locale === 'ru' ? 'Стол' : locale === 'en' ? 'Table' : 'Stol'} {order.table_number || '-'}
                   </span>
                 </div>
-                <span className={`badge ${getStatusBadge(order.status)}`}>{order.status}</span>
+                <span className={`badge ${getStatusBadge(order.status)}`}>
+                  {translateValue('status', order.status, locale)}
+                </span>
               </div>
 
               <div className="order-items">
@@ -214,7 +224,7 @@ export default function OrdersPage() {
               )}
 
               <div className="order-total">
-                <span>Total</span>
+                <span>{locale === 'ru' ? 'Итого' : locale === 'en' ? 'Total' : 'Jami'}</span>
                 <span style={{ color: 'var(--accent-green)' }}>
                   {formatCurrency(order.total_amount || order.total)}
                 </span>
@@ -226,7 +236,7 @@ export default function OrdersPage() {
                     className="btn btn-blue btn-sm"
                     onClick={() => handleUpdateStatus(order, 'cooking')}
                   >
-                    Start Cooking
+                    {locale === 'ru' ? '🍳 Начать готовить' : locale === 'en' ? '🍳 Start Cooking' : '🍳 Tayyorlashni boshlash'}
                   </button>
                 )}
                 {order.status === 'cooking' && (
@@ -234,7 +244,7 @@ export default function OrdersPage() {
                     className="btn btn-green btn-sm"
                     onClick={() => handleUpdateStatus(order, 'ready')}
                   >
-                    Mark Ready
+                    {locale === 'ru' ? '✅ Готово' : locale === 'en' ? '✅ Mark Ready' : '✅ Tayyor belgilash'}
                   </button>
                 )}
                 {order.status === 'ready' && (
@@ -242,7 +252,7 @@ export default function OrdersPage() {
                     className="btn btn-primary btn-sm"
                     onClick={() => handleUpdateStatus(order, 'served')}
                   >
-                    Mark Served
+                    {locale === 'ru' ? '🍽️ Подан' : locale === 'en' ? '🍽️ Mark Served' : '🍽️ Berildi belgilash'}
                   </button>
                 )}
                 {(order.status === 'served' || order.status === 'ready') && (
@@ -250,7 +260,7 @@ export default function OrdersPage() {
                     className="btn btn-green btn-sm"
                     onClick={() => handleUpdateStatus(order, 'paid')}
                   >
-                    💰 Mark Paid
+                    💰 {locale === 'ru' ? 'Оплачен' : locale === 'en' ? 'Mark Paid' : "To'landi"}
                   </button>
                 )}
                 {order.status !== 'cancelled' && order.status !== 'paid' && (
@@ -258,7 +268,7 @@ export default function OrdersPage() {
                     className="btn btn-ghost btn-sm"
                     onClick={() => handleUpdateStatus(order, 'cancelled')}
                   >
-                    Cancel
+                    {locale === 'ru' ? 'Отменить' : locale === 'en' ? 'Cancel' : 'Bekor qilish'}
                   </button>
                 )}
               </div>
@@ -276,7 +286,9 @@ export default function OrdersPage() {
             style={{ maxWidth: '700px', maxHeight: '90vh', overflow: 'auto' }}
           >
             <div className="modal-header">
-              <h2 className="modal-title">Create New Order</h2>
+              <h2 className="modal-title">
+                {locale === 'ru' ? 'Создать новый заказ' : locale === 'en' ? 'Create New Order' : 'Yangi Buyurtma Yaratish'}
+              </h2>
               <button className="modal-close" onClick={() => setShowNewOrder(false)}>
                 ✕
               </button>
@@ -285,7 +297,9 @@ export default function OrdersPage() {
             <form onSubmit={handleCreateOrder}>
               <div className="form-row">
                 <div className="form-group">
-                  <label className="form-label">Table Number</label>
+                  <label className="form-label">
+                    {locale === 'ru' ? 'Номер стола' : locale === 'en' ? 'Table Number' : 'Stol raqami'}
+                  </label>
                   <input
                     type="number"
                     className="form-input"
@@ -297,11 +311,13 @@ export default function OrdersPage() {
                   />
                 </div>
                 <div className="form-group">
-                  <label className="form-label">Note (optional)</label>
+                  <label className="form-label">
+                    {locale === 'ru' ? 'Заметка (опционально)' : locale === 'en' ? 'Note (optional)' : 'Izoh (ixtiyoriy)'}
+                  </label>
                   <input
                     type="text"
                     className="form-input"
-                    placeholder="Special requests..."
+                    placeholder={locale === 'ru' ? 'Особые пожелания...' : locale === 'en' ? 'Special requests...' : "Maxsus talablar..."}
                     value={orderNote}
                     onChange={(e) => setOrderNote(e.target.value)}
                   />
@@ -311,7 +327,7 @@ export default function OrdersPage() {
               {/* Menu Items Selection */}
               <div className="new-order-section">
                 <h3 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '12px' }}>
-                  Select Items
+                  {locale === 'ru' ? 'Выбрать блюда' : locale === 'en' ? 'Select Items' : "Taomlarni tanlash"}
                 </h3>
 
                 {categories.map((cat) => (
@@ -334,7 +350,7 @@ export default function OrdersPage() {
                                 <div className="menu-select-item-name">{item.name}</div>
                                 {inCart && (
                                   <span style={{ fontSize: '12px', color: 'var(--primary-light)' }}>
-                                    × {inCart.quantity} in cart
+                                    × {inCart.quantity} {locale === 'ru' ? 'в корзине' : locale === 'en' ? 'in cart' : 'savatda'}
                                   </span>
                                 )}
                               </div>
@@ -350,7 +366,7 @@ export default function OrdersPage() {
 
                 {allMenuItems.length === 0 && (
                   <p style={{ color: 'var(--text-tertiary)', fontSize: '14px', textAlign: 'center', padding: '20px' }}>
-                    No menu items available. Add items in the Menu page first.
+                    {locale === 'ru' ? 'Нет доступных блюд. Сначала добавьте блюда в меню.' : locale === 'en' ? 'No menu items available. Add items in the Menu page first.' : "Mavjud taomlar yo'q. Avval Menyu sahifasidan taom qo'shing."}
                   </p>
                 )}
               </div>
@@ -359,7 +375,7 @@ export default function OrdersPage() {
               {cart.length > 0 && (
                 <div className="new-order-section">
                   <h3 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                    Cart ({cart.length} items)
+                    {locale === 'ru' ? `Корзина (${cart.length} поз.)` : locale === 'en' ? `Cart (${cart.length} items)` : `Savat (${cart.length} ta)`}
                   </h3>
                   <div className="cart-items">
                     {cart.map((item) => (
@@ -397,7 +413,7 @@ export default function OrdersPage() {
                     ))}
                   </div>
                   <div className="order-total" style={{ marginTop: '16px' }}>
-                    <span>Total</span>
+                    <span>{locale === 'ru' ? 'Итого' : locale === 'en' ? 'Total' : 'Jami'}</span>
                     <span style={{ color: 'var(--accent-green)', fontSize: '20px' }}>
                       {formatCurrency(cartTotal)}
                     </span>
@@ -407,10 +423,13 @@ export default function OrdersPage() {
 
               <div className="modal-actions">
                 <button type="button" className="btn btn-ghost" onClick={() => setShowNewOrder(false)}>
-                  Cancel
+                  {locale === 'ru' ? 'Отмена' : locale === 'en' ? 'Cancel' : 'Bekor qilish'}
                 </button>
                 <button type="submit" className="btn btn-primary" disabled={saving || cart.length === 0}>
-                  {saving ? 'Creating...' : `Create Order (${formatCurrency(cartTotal)})`}
+                  {saving
+                    ? (locale === 'ru' ? 'Создание...' : locale === 'en' ? 'Creating...' : 'Saqlanmoqda...')
+                    : `${locale === 'ru' ? 'Создать заказ' : locale === 'en' ? 'Create Order' : 'Buyurtma Yaratish'} (${formatCurrency(cartTotal)})`
+                  }
                 </button>
               </div>
             </form>
@@ -425,5 +444,6 @@ export default function OrdersPage() {
         </div>
       )}
     </div>
+
   );
 }

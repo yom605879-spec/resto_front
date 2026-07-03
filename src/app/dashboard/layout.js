@@ -20,35 +20,35 @@ const NAV_ITEMS = {
     { href: '/dashboard', t_key: 'sidebar.dashboard', icon: '📈' },
     { href: '/dashboard/finance', t_key: 'sidebar.expenses', icon: '💰' },
     { href: '/dashboard/staff', t_key: 'sidebar.staff', icon: '👥' },
-    { href: '/dashboard/payroll', label: 'Oylik Maosh', icon: '💸' },
+    { href: '/dashboard/payroll', t_key: 'sidebar.payroll', label: 'Oylik Maosh', icon: '💸' },
     { href: '/dashboard/menu', t_key: 'sidebar.menu', icon: '🍽️' },
-    { href: '/dashboard/branches', label: 'Filial Boshqaruv', icon: '🏢' }, // No translation yet, fallback to label if t_key is missing
-    { href: '/dashboard/settings', label: 'Platforma Sozlama', icon: '⚙️' },
+    { href: '/dashboard/branches', t_key: 'sidebar.branches', label: 'Filial Boshqaruv', icon: '🏢' },
+    { href: '/dashboard/settings', t_key: 'sidebar.settings', label: 'Platforma Sozlama', icon: '⚙️' },
   ],
   admin: [
     { href: '/dashboard', t_key: 'sidebar.dashboard', icon: '📈' },
     { href: '/dashboard/staff', t_key: 'sidebar.staff', icon: '👥' },
-    { href: '/dashboard/payroll', label: 'Oylik Maosh', icon: '💸' },
+    { href: '/dashboard/payroll', t_key: 'sidebar.payroll', label: 'Oylik Maosh', icon: '💸' },
     { href: '/dashboard/customers', t_key: 'sidebar.customers', icon: '👥' },
   ],
   kassir: [
     { href: '/dashboard/payments', t_key: 'sidebar.payments', icon: '💵' },
-    { href: '/dashboard/receipts', label: 'Chek Chiqarish', icon: '🧾' },
+    { href: '/dashboard/receipts', t_key: 'sidebar.receipts', label: 'Chek Chiqarish', icon: '🧾' },
     { href: '/dashboard/refunds', t_key: 'sidebar.refunds', icon: '↩️' },
     { href: '/dashboard/reports-daily', t_key: 'sidebar.reportsDaily', icon: '📊' },
     { href: '/dashboard/discounts', t_key: 'sidebar.discounts', icon: '🏷️' },
     { href: '/dashboard/payment-history', t_key: 'sidebar.paymentHistory', icon: '⏳' },
   ],
   oshpaz: [
-    { href: '/dashboard/kitchen', label: 'Buyurtma Ko\'rish', icon: '🍳' },
+    { href: '/dashboard/kitchen', t_key: 'sidebar.kitchen', label: 'Buyurtma Ko\'rish', icon: '🍳' },
     { href: '/dashboard/inventory', t_key: 'sidebar.inventory', icon: '📦' },
     { href: '/dashboard/tasks', t_key: 'sidebar.tasks', icon: '📋' },
     { href: '/dashboard/schedule', t_key: 'sidebar.schedule', icon: '📅' },
   ],
   ofitsiant: [
-    { href: '/dashboard/tables-view', label: 'Stollar Xaritasi', icon: '🪑' },
-    { href: '/dashboard/order-take', label: 'Buyurtma Olish', icon: '📝' },
-    { href: '/dashboard/orders', label: 'Buyurtmalarim', icon: '📋' },
+    { href: '/dashboard/tables-view', t_key: 'sidebar.tablesView', label: 'Stollar Xaritasi', icon: '🪑' },
+    { href: '/dashboard/order-take', t_key: 'sidebar.orderTake', label: 'Buyurtma Olish', icon: '📝' },
+    { href: '/dashboard/orders', t_key: 'sidebar.orders', label: 'Buyurtmalarim', icon: '📋' },
   ],
   mijoz: [
     { href: '/dashboard/menu-view', t_key: 'sidebar.menuView', icon: '🍔' },
@@ -127,7 +127,7 @@ export default function DashboardLayout({ children }) {
   const role = user?.role || 'boss';
   const navItems = NAV_ITEMS[role] || NAV_ITEMS.boss;
   const initials = `${(user?.first_name || '')[0] || ''}${(user?.last_name || '')[0] || ''}`.toUpperCase() || 'U';
-  const roleLabel = ROLE_LABELS_UZ[role] || role;
+  const roleLabel = t('common.roles.' + role) || ROLE_LABELS_UZ[role] || role;
 
   const getPageTitle = () => {
     const currentItem = navItems.find(i => i.href === pathname);
@@ -182,7 +182,7 @@ export default function DashboardLayout({ children }) {
         </div>
 
         <nav className="sidebar-nav">
-          <div className="sidebar-nav-label">Navigation</div>
+          <div className="sidebar-nav-label">{t('sidebar.navigation') || 'Navigation'}</div>
           {navItems.map((item) => (
             <Link
               key={item.href}

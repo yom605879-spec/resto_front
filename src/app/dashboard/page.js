@@ -79,7 +79,7 @@ export default function DashboardOverview() {
       <div className="stats-grid" style={{ marginBottom: '30px' }}>
         <div className="glass-card animate-fade-in" style={{ animationDelay: '0.1s', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '5px' }}>Jami Buyurtmalar</div>
+            <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '5px' }}>{t('overview.totalOrders') || 'Jami Buyurtmalar'}</div>
             <div style={{ fontSize: '24px', fontWeight: 'bold' }}>{stats?.total_orders || 0} ta</div>
           </div>
           <div style={{ fontSize: '30px', background: 'rgba(255,255,255,0.05)', padding: '15px', borderRadius: '50%' }}>📋</div>
@@ -87,7 +87,7 @@ export default function DashboardOverview() {
 
         <div className="glass-card animate-fade-in" style={{ animationDelay: '0.2s', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderLeft: '3px solid var(--accent-green)' }}>
           <div>
-            <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '5px' }}>Jami Tushum</div>
+            <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '5px' }}>{t('overview.totalRevenue') || 'Jami Tushum'}</div>
             <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--accent-green)' }}>{formatCurrency(stats?.total_income)}</div>
           </div>
           <div style={{ fontSize: '30px', background: 'rgba(0,184,148,0.1)', padding: '15px', borderRadius: '50%' }}>💵</div>
@@ -95,7 +95,7 @@ export default function DashboardOverview() {
 
         <div className="glass-card animate-fade-in" style={{ animationDelay: '0.3s', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderLeft: '3px solid var(--accent-red)' }}>
           <div>
-            <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '5px' }}>Jami Xarajatlar</div>
+            <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '5px' }}>{t('overview.totalExpenses') || 'Jami Xarajatlar'}</div>
             <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--accent-red)' }}>{formatCurrency(stats?.total_expenses)}</div>
           </div>
           <div style={{ fontSize: '30px', background: 'rgba(225,112,85,0.1)', padding: '15px', borderRadius: '50%' }}>📉</div>
@@ -103,7 +103,7 @@ export default function DashboardOverview() {
 
         <div className="glass-card animate-fade-in" style={{ animationDelay: '0.4s', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
-            <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '5px' }}>Faol Taomlar</div>
+            <div style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '5px' }}>{t('overview.activeDishes') || 'Faol Taomlar'}</div>
             <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--accent-blue)' }}>{stats?.active_menu_items || 0} ta</div>
           </div>
           <div style={{ fontSize: '30px', background: 'rgba(9,132,227,0.1)', padding: '15px', borderRadius: '50%' }}>🍽️</div>
@@ -112,7 +112,7 @@ export default function DashboardOverview() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '20px', marginBottom: '30px' }}>
         <div className="glass-card animate-fade-in" style={{ animationDelay: '0.5s', height: '400px' }}>
-          <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: 'bold' }}>Haftalik Daromad (Grafik)</h3>
+          <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: 'bold' }}>{t('overview.weeklyRevenue') || 'Haftalik Daromad (Grafik)'}</h3>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
@@ -120,45 +120,45 @@ export default function DashboardOverview() {
               <YAxis stroke="rgba(255,255,255,0.5)" />
               <Tooltip contentStyle={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '8px' }} />
               <Legend />
-              <Line type="monotone" dataKey="revenue" name="Daromad (UZS)" stroke="var(--primary)" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 8 }} />
+              <Line type="monotone" dataKey="revenue" name={t('overview.revenueUzs') || 'Daromad (UZS)'} stroke="var(--primary)" strokeWidth={3} dot={{ r: 4 }} activeDot={{ r: 8 }} />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
         <div className="glass-card animate-fade-in" style={{ animationDelay: '0.6s', height: '400px' }}>
-          <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: 'bold' }}>Buyurtmalar Soni</h3>
+          <h3 style={{ marginBottom: '20px', fontSize: '18px', fontWeight: 'bold' }}>{t('overview.ordersCount') || 'Buyurtmalar Soni'}</h3>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={revenueData}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" />
               <XAxis dataKey="name" stroke="rgba(255,255,255,0.5)" />
               <Tooltip contentStyle={{ background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', borderRadius: '8px' }} cursor={{ fill: 'rgba(255,255,255,0.05)' }} />
-              <Bar dataKey="orders" name="Buyurtmalar" fill="var(--accent-green)" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="orders" name={t('overview.orders') || 'Buyurtmalar'} fill="var(--accent-green)" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       <div className="glass-card-static animate-fade-in" style={{ animationDelay: '0.7s' }}>
-        <h2 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '20px' }}>So'nggi Buyurtmalar</h2>
+        <h2 style={{ fontSize: '18px', fontWeight: '700', marginBottom: '20px' }}>{t('overview.recentOrders') || "So'nggi Buyurtmalar"}</h2>
         {recentOrders.length === 0 ? (
-          <div className="empty-state">Buyurtmalar yo'q</div>
+          <div className="empty-state">{t('overview.noOrders') || "Buyurtmalar yo'q"}</div>
         ) : (
           <div className="table-container">
             <table className="table">
               <thead>
                 <tr>
-                  <th>Buyurtma #</th>
-                  <th>Stol / Tur</th>
-                  <th>Summa</th>
-                  <th>Holat</th>
-                  <th>Vaqt</th>
+                  <th>{t('overview.orderNum') || 'Buyurtma #'}</th>
+                  <th>{t('overview.tableOrType') || 'Stol / Tur'}</th>
+                  <th>{t('overview.amount') || 'Summa'}</th>
+                  <th>{t('overview.status') || 'Holat'}</th>
+                  <th>{t('overview.time') || 'Vaqt'}</th>
                 </tr>
               </thead>
               <tbody>
                 {recentOrders.map((order) => (
                   <tr key={order.id}>
                     <td style={{ fontWeight: '600' }}>#{order.id}</td>
-                    <td>{order.table_number ? `Stol ${order.table_number}` : (order.order_type === 'delivery' ? 'Dostavka' : 'Olib ketish')}</td>
+                    <td>{order.table_number ? `${t('overview.table') || 'Stol'} ${order.table_number}` : (order.order_type === 'delivery' ? (t('overview.delivery') || 'Dostavka') : (t('overview.pickup') || 'Olib ketish'))}</td>
                     <td style={{ fontWeight: '600', color: 'var(--accent-green)' }}>{formatCurrency(order.total_amount)}</td>
                     <td><span className={`badge ${getStatusBadge(order.status)}`}>{order.status}</span></td>
                     <td>{new Date(order.created_at).toLocaleTimeString()}</td>
