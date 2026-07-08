@@ -79,8 +79,13 @@ export default function MenuViewPage() {
               </h3>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '15px' }}>
                 {cat.items?.filter(i => i.available).map(item => (
-                  <div key={item.id} className="dashboard-card" style={{ padding: '15px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div key={item.id} className="dashboard-card" style={{ padding: '15px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', overflow: 'hidden' }}>
                     <div>
+                      {item.image_url && (
+                        <div style={{ height: '120px', margin: '-15px -15px 10px -15px', overflow: 'hidden' }}>
+                          <img src={item.image_url} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
+                      )}
                       <h4 style={{ fontSize: '15px', fontWeight: 'bold' }}>{item.name}</h4>
                       <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '5px' }}>{item.description}</p>
                     </div>

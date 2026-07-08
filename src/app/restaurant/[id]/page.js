@@ -247,7 +247,12 @@ export default function PublicRestaurantPage() {
             ) : (
               <div className="features-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
                 {activeCategoryData.items.map((item) => (
-                  <div key={item.id} className="feature-card" style={{ padding: '20px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                  <div key={item.id} className="feature-card" style={{ padding: '20px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+                    {item.image_url && (
+                      <div style={{ height: '160px', margin: '-20px -20px 15px -20px', overflow: 'hidden' }}>
+                        <img src={item.image_url} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      </div>
+                    )}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
                       <h3 style={{ fontSize: '17px', fontWeight: '700', color: '#fff' }}>{item.name}</h3>
                       <span style={{ fontSize: '16px', fontWeight: '800', color: 'var(--accent-green)' }}>

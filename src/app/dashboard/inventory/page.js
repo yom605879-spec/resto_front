@@ -244,7 +244,9 @@ export default function InventoryPage() {
                       key={item.id || item._id}
                       onClick={() => handleSelectMenuItem(item)}
                       style={{
-                        display: 'block',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
                         width: '100%',
                         textAlign: 'left',
                         padding: '10px',
@@ -256,7 +258,10 @@ export default function InventoryPage() {
                         marginBottom: '5px'
                       }}
                     >
-                      {item.name}
+                      {item.image_url && (
+                        <img src={item.image_url} alt={item.name} style={{ width: '32px', height: '32px', borderRadius: '4px', objectFit: 'cover' }} />
+                      )}
+                      <span>{item.name}</span>
                     </button>
                   ))}
                 </div>

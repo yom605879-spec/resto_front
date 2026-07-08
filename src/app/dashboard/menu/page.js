@@ -220,7 +220,13 @@ export default function MenuPage() {
                     <div
                       key={item._id || item.id}
                       className={`menu-item-card ${item.available === false ? 'unavailable' : ''}`}
+                      style={{ overflow: 'hidden' }}
                     >
+                      {item.image_url && (
+                        <div style={{ height: '140px', margin: '-20px -20px 15px -20px', overflow: 'hidden' }}>
+                          <img src={item.image_url} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        </div>
+                      )}
                       <div className="menu-item-name">{item.name}</div>
                       <div className="menu-item-price">
                         {new Intl.NumberFormat().format(item.price)}

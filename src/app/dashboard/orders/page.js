@@ -346,13 +346,18 @@ export default function OrdersPage() {
                               className={`menu-select-item ${inCart ? 'selected' : ''}`}
                               onClick={() => addToCart(item)}
                             >
-                              <div>
-                                <div className="menu-select-item-name">{item.name}</div>
-                                {inCart && (
-                                  <span style={{ fontSize: '12px', color: 'var(--primary-light)' }}>
-                                    × {inCart.quantity} {locale === 'ru' ? 'в корзине' : locale === 'en' ? 'in cart' : 'savatda'}
-                                  </span>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                {item.image_url && (
+                                  <img src={item.image_url} alt={item.name} style={{ width: '40px', height: '40px', borderRadius: '6px', objectFit: 'cover', flexShrink: 0 }} />
                                 )}
+                                <div>
+                                  <div className="menu-select-item-name">{item.name}</div>
+                                  {inCart && (
+                                    <span style={{ fontSize: '12px', color: 'var(--primary-light)' }}>
+                                      × {inCart.quantity} {locale === 'ru' ? 'в корзине' : locale === 'en' ? 'in cart' : 'savatda'}
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                               <span className="menu-select-item-price">
                                 {formatCurrency(item.price)}

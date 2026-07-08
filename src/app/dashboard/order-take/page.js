@@ -76,7 +76,12 @@ export default function OrderTakePage() {
             <h3 style={{ fontSize: '18px', color: 'var(--accent-yellow)', marginBottom: '15px' }}>{cat.name}</h3>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '15px' }}>
               {cat.items?.filter(i => i.available).map(item => (
-                <div key={item.id} className="glass-card" style={{ padding: '15px', cursor: 'pointer', textAlign: 'center' }} onClick={() => addToCart(item)}>
+                <div key={item.id} className="glass-card" style={{ padding: '15px', cursor: 'pointer', textAlign: 'center', overflow: 'hidden' }} onClick={() => addToCart(item)}>
+                  {item.image_url && (
+                    <div style={{ height: '100px', margin: '-15px -15px 10px -15px', overflow: 'hidden' }}>
+                      <img src={item.image_url} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                  )}
                   <h4 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '10px' }}>{item.name}</h4>
                   <div style={{ color: 'var(--accent-green)', fontWeight: 'bold' }}>{new Intl.NumberFormat('uz-UZ').format(item.price)}</div>
                 </div>
