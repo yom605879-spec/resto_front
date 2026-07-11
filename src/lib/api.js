@@ -138,4 +138,18 @@ export const api = {
   // Payroll
   getPayroll: (month) => request(`/api/payroll?month=${month}`),
   paySalary: (data) => request('/api/payroll/pay', { method: 'POST', body: JSON.stringify(data) }),
+
+  // Public Reviews & Ratings
+  getPublicReviews: (restId = 1) => request(`/api/reviews?restaurant_id=${restId}`),
+  createPublicReview: (orderId, data) => 
+    request('/api/reviews', { method: 'POST', body: JSON.stringify({ order_id: orderId, ...data }) }),
+
+  // Attendance (Davomat)
+  getAttendance: (params = '') => request(`/api/attendance${params ? '?' + params : ''}`),
+  markAttendance: (data) => request('/api/attendance', { method: 'POST', body: JSON.stringify(data) }),
+  updateAttendance: (id, data) => request(`/api/attendance/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  getAttendanceSummary: (month) => request(`/api/attendance/summary?month=${month}`),
 };
+
+
+

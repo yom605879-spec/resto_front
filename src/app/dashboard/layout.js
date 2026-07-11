@@ -20,6 +20,7 @@ const NAV_ITEMS = {
     { href: '/dashboard', t_key: 'sidebar.dashboard', icon: '📈' },
     { href: '/dashboard/finance', t_key: 'sidebar.expenses', icon: '💰' },
     { href: '/dashboard/staff', t_key: 'sidebar.staff', icon: '👥' },
+    { href: '/dashboard/attendance', t_key: 'sidebar.attendance', label: 'Davomat', icon: '🗓️' },
     { href: '/dashboard/payroll', t_key: 'sidebar.payroll', label: 'Oylik Maosh', icon: '💸' },
     { href: '/dashboard/menu', t_key: 'sidebar.menu', icon: '🍽️' },
     { href: '/dashboard/branches', t_key: 'sidebar.branches', label: 'Filial Boshqaruv', icon: '🏢' },
@@ -28,6 +29,7 @@ const NAV_ITEMS = {
   admin: [
     { href: '/dashboard', t_key: 'sidebar.dashboard', icon: '📈' },
     { href: '/dashboard/staff', t_key: 'sidebar.staff', icon: '👥' },
+    { href: '/dashboard/attendance', t_key: 'sidebar.attendance', label: 'Davomat', icon: '🗓️' },
     { href: '/dashboard/payroll', t_key: 'sidebar.payroll', label: 'Oylik Maosh', icon: '💸' },
     { href: '/dashboard/customers', t_key: 'sidebar.customers', icon: '👥' },
   ],

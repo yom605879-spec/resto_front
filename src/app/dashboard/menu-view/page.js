@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
 
 export default function MenuViewPage() {
+  const router = useRouter();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState([]);
@@ -51,8 +53,9 @@ export default function MenuViewPage() {
           quantity: i.quantity
         }))
       });
-      alert('Buyurtma qabul qilindi! "Mening buyurtmalarim" bo\'limidan kuzatishingiz mumkin.');
+      alert('Buyurtma qabul qilindi! "Mening buyurtmalarim" bo\'limiga o\'tilmoqda...');
       setCart([]);
+      window.location.href = '/dashboard/my-orders';
     } catch (err) {
       alert('Xatolik: ' + err.message);
     }

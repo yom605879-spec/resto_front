@@ -146,23 +146,34 @@ export default function Home() {
         }}>
           ✦ Restaran
         </div>
-        <Link href="/login" style={{
-          padding: '10px 22px', borderRadius: '12px',
-          border: '1px solid rgba(108,60,255,0.5)',
-          background: 'rgba(108,60,255,0.1)',
-          color: '#a78bfa', fontWeight: 600, fontSize: '14px',
-          textDecoration: 'none', transition: 'all 0.2s',
-        }}
-        onMouseEnter={e => {
-          e.currentTarget.style.background = 'rgba(108,60,255,0.2)';
-          e.currentTarget.style.borderColor = 'rgba(108,60,255,0.8)';
-        }}
-        onMouseLeave={e => {
-          e.currentTarget.style.background = 'rgba(108,60,255,0.1)';
-          e.currentTarget.style.borderColor = 'rgba(108,60,255,0.5)';
-        }}>
-          Tizimga Kirish
-        </Link>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <Link href="/dashboard/reviews" style={{
+            padding: '10px 18px', borderRadius: '12px',
+            border: '1px solid rgba(245,158,11,0.4)',
+            background: 'rgba(245,158,11,0.12)',
+            color: '#f59e0b', fontWeight: 700, fontSize: '14px',
+            textDecoration: 'none', transition: 'all 0.2s',
+          }}>
+            ⭐ Baholar va Sharhlar
+          </Link>
+          <Link href="/login" style={{
+            padding: '10px 22px', borderRadius: '12px',
+            border: '1px solid rgba(108,60,255,0.5)',
+            background: 'rgba(108,60,255,0.1)',
+            color: '#a78bfa', fontWeight: 600, fontSize: '14px',
+            textDecoration: 'none', transition: 'all 0.2s',
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = 'rgba(108,60,255,0.2)';
+            e.currentTarget.style.borderColor = 'rgba(108,60,255,0.8)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = 'rgba(108,60,255,0.1)';
+            e.currentTarget.style.borderColor = 'rgba(108,60,255,0.5)';
+          }}>
+            Kirish →
+          </Link>
+        </div>
       </nav>
 
       {/* Hero */}

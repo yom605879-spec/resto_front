@@ -193,12 +193,22 @@ export default function PublicRestaurantPage() {
       )}
 
       {/* Navigation Header */}
-      <nav className="landing-nav" style={{ backdropFilter: 'var(--glass-blur)', borderBottom: '1px solid var(--border-color)' }}>
+      <nav className="landing-nav" style={{ backdropFilter: 'var(--glass-blur)', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 24px' }}>
         <div className="landing-logo">✦ {restaurantName}</div>
-        <button className="btn btn-primary btn-sm" onClick={() => setCartOpen(true)} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          🛒 Savat <span style={{ background: '#fff', color: 'var(--primary)', padding: '2px 6px', borderRadius: '50px', fontSize: '11px', fontWeight: '800' }}>{cart.reduce((sum, item) => sum + item.quantity, 0)}</span>
-        </button>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <button 
+            className="btn btn-secondary btn-sm" 
+            onClick={() => router.push('/dashboard/reviews')}
+            style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.4)', color: '#f59e0b', fontWeight: '700' }}
+          >
+            ⭐ Sharhlar (4.8)
+          </button>
+          <button className="btn btn-primary btn-sm" onClick={() => setCartOpen(true)} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            🛒 Savat <span style={{ background: '#fff', color: 'var(--primary)', padding: '2px 6px', borderRadius: '50px', fontSize: '11px', fontWeight: '800' }}>{cart.reduce((sum, item) => sum + item.quantity, 0)}</span>
+          </button>
+        </div>
       </nav>
+
 
       {/* Banner / Hero */}
       <section className="hero-section" style={{ padding: '80px 24px 40px', minHeight: 'auto', background: 'radial-gradient(circle at top, rgba(108, 92, 231, 0.08) 0%, transparent 70%)' }}>
